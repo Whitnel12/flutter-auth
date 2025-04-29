@@ -24,8 +24,10 @@ android {
         applicationId = "com.example.learning_auth"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        // minSdk = flutter.minSdkVersion
+        // targetSdk = flutter.targetSdkVersion
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -38,6 +40,20 @@ android {
         }
     }
 }
+
+
+// Menambahkan bagian dependencies untuk Firebase dan SDK lainnya
+dependencies {
+    // Firebase SDK
+    implementation platform('com.google.firebase:firebase-bom:33.13.0')  // Firebase BoM (untuk menyinkronkan versi)
+    implementation 'com.google.firebase:firebase-auth'  // Firebase Authentication SDK
+    implementation("com.google.firebase:firebase-analytics")
+    // Tambahkan SDK Firebase lainnya jika diperlukan
+    // implementation 'com.google.firebase:firebase-firestore'
+    // implementation 'com.google.firebase:firebase-analytics'
+}
+
+apply plugin: 'com.google.gms.google-services'  // Plugin untuk mengaktifkan Firebase di Android
 
 flutter {
     source = "../.."
