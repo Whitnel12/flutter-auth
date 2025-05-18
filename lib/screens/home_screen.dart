@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:learning_auth/screens/bag_screen.dart';
+import 'package:learning_auth/widgets/product_item.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import "package:smooth_page_indicator/smooth_page_indicator.dart";
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final TextColor = const Color(0xFF3D5154);
+
   final ColorItem = const Color(0xFF485F62);
+
+  final myItems = [
+    Image.asset('assets/shoes.jpg'),
+    Image.asset('assets/shoes.jpg'),
+    Image.asset('assets/shoes.jpg'),
+    Image.asset('assets/shoes.jpg'),
+    Image.asset('assets/shoes.jpg'),
+  ];
+
+  int myCurrentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +46,40 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    'assets/shoes.jpg',
+                CarouselSlider(
+                  options: CarouselOptions(
+                      autoPlay: true,
+                      height: 200,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      enlargeCenterPage: true,
+                      aspectRatio: 2.0,
+                      autoPlayInterval: const Duration(seconds: 2),
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          myCurrentIndex = index;
+                        });
+                      }),
+                  items: myItems.map((item) {
+                    return ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(10), // 👈 Border radius di sini
+                      child: item,
+                    );
+                  }).toList(),
+                ),
+                Center(
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: myCurrentIndex,
+                    count: myItems.length,
+                    effect: WormEffect(
+                        dotHeight: 8,
+                        dotWidth: 8,
+                        spacing: 5,
+                        dotColor: Colors.grey.shade200,
+                        activeDotColor: Colors.grey.shade900,
+                        paintStyle: PaintingStyle.fill),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -141,191 +190,49 @@ class HomeScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
                 ),
                 SizedBox(height: 20),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ProductItem(
-                            ImageProduct: 'assets/jacket.png',
-                            TitleProduct: 'Pants',
-                            CategoryProduct: 'Pants',
-                            PriceProduct: '10',
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                GridView.count(
+                    primary: false,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                      ProductItem(
+                          ImageProduct: 'assets/jacket.png',
+                          TitleProduct: 'jacket',
+                          CategoryProduct: 'jacket',
+                          PriceProduct: '200.000'),
+                    ]),
               ],
             ),
           ),
         ));
-  }
-}
-
-class ProductItem extends StatelessWidget {
-  final String ImageProduct;
-  final String TitleProduct;
-  final String CategoryProduct;
-  final String PriceProduct;
-
-  const ProductItem({
-    super.key,
-    required this.ImageProduct,
-    required this.TitleProduct,
-    required this.CategoryProduct,
-    required this.PriceProduct,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final TextColor = const Color(0xFF3D5154);
-    final ColorItem = const Color(0xFF485F62);
-
-    return Container(
-      width: 190,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          Container(
-            color: Color(0xFFF5F5F5),
-            child: Image.asset(
-              ImageProduct,
-              height: 150,
-              width: 190,
-            ),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              TitleProduct,
-              style: TextStyle(
-                  color: TextColor, fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              CategoryProduct,
-              style: TextStyle(color: Color(0xFFC8CECF)),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  PriceProduct,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: TextColor,
-                      fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.add),
-                  color: Colors.white,
-                  style: IconButton.styleFrom(backgroundColor: ColorItem),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
   }
 }

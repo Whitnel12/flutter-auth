@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^2.18.0
   firebase_auth: ^4.16.0
+  carousel_slider: ^5.0.0
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +66,7 @@ flutter:
     - assets/logo.png
     - assets/jacket.png
     - assets/shoes.jpg
+    - assets/nike_logo.png
 
   #   - images/a_dot_ham.jpeg
 

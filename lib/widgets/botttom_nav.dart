@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning_auth/screens/bag_screen.dart';
 import 'package:learning_auth/screens/home_screen.dart';
-import 'package:learning_auth/screens/profile_screen.dart'; // Pastikan ini ada
+import 'package:learning_auth/screens/profile_screen.dart';
+import 'package:learning_auth/screens/search_screen.dart'; // Pastikan ini ada
 
 class BottomNav extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class BottomNavState extends State<BottomNav> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    Center(child: Text("Search Page")),
+    SearchScreen(),
     BagPage(),
     ProfileScreen(),
   ];
