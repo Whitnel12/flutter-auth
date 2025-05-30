@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:learning_auth/screens/bag_screen.dart';
+import 'package:learning_auth/screens/product_detail.dart';
 import 'package:learning_auth/widgets/product_item.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:smooth_page_indicator/smooth_page_indicator.dart";
@@ -14,6 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ColorItem = const Color(0xFF485F62);
 
+  String Selected = 'dress';
+
+  int myCurrentIndex = 0;
+
+  // String isSelected = 'dress';
+
   final myItems = [
     Image.asset('assets/shoes.jpg'),
     Image.asset('assets/shoes.jpg'),
@@ -22,7 +31,32 @@ class _HomeScreenState extends State<HomeScreen> {
     Image.asset('assets/shoes.jpg'),
   ];
 
-  int myCurrentIndex = 0;
+  Widget buildCategoryButton(String category) {
+    return TextButton(
+        onPressed: () {
+          setState(() {
+            Selected = category;
+          });
+          print(Selected);
+        },
+        style: TextButton.styleFrom(
+            backgroundColor:
+                Selected.toLowerCase().trim() == category.toLowerCase().trim()
+                    ? ColorItem
+                    : Colors.white,
+
+            // backgroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 20)),
+        child: Text(
+          category,
+          style: TextStyle(
+            color:
+                Selected.toLowerCase().trim() == category.toLowerCase().trim()
+                    ? Colors.white
+                    : Color(0xFF8B999B),
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,48 +122,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
                 ),
                 SizedBox(height: 20),
-                Row(
-                  children: [
-                    TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: ColorItem,
-                            padding: EdgeInsets.symmetric(horizontal: 20)),
-                        child: Text(
-                          "Dress",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                    SizedBox(width: 10),
-                    TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 20)),
-                        child: Text(
-                          "Shoes",
-                          style: TextStyle(color: Color(0xFF8B999B)),
-                        )),
-                    SizedBox(width: 10),
-                    TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 20)),
-                        child: Text(
-                          "Pants",
-                          style: TextStyle(color: Color(0xFF8B999B)),
-                        )),
-                    SizedBox(width: 10),
-                    TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 20)),
-                        child: Text(
-                          "Jacket",
-                          style: TextStyle(color: Color(0xFF8B999B)),
-                        )),
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      buildCategoryButton('Dress'),
+                      SizedBox(width: 10),
+                      buildCategoryButton('Shoes'),
+                      SizedBox(width: 10),
+                      buildCategoryButton('Jacket'),
+                      SizedBox(width: 10),
+                      buildCategoryButton('pants'),
+                      SizedBox(width: 10),
+                      buildCategoryButton('bag'),
+                      SizedBox(width: 10),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 20),
                 SingleChildScrollView(
@@ -190,46 +198,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
                 ),
                 SizedBox(height: 20),
-                GridView.count(
-                    primary: false,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    shrinkWrap: true,
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.7,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                      ProductItem(
-                          ImageProduct: 'assets/jacket.png',
-                          TitleProduct: 'jacket',
-                          CategoryProduct: 'jacket',
-                          PriceProduct: '200.000'),
-                    ]),
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    mainAxisExtent: 266,
+                  ),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductDetail())),
+                      child: ProductItem(
+                        ImageProduct: 'assets/jacket.png',
+                        TitleProduct: 'jacket',
+                        CategoryProduct: 'jacket',
+                        PriceProduct: '200.000',
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

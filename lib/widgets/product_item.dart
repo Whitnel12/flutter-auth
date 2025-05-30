@@ -27,58 +27,54 @@ class ProductItem extends StatelessWidget {
       ),
       padding: EdgeInsets.all(5),
       child: Container(
-        child: Column(
-          children: [
-            Container(
-              color: Color(0xFFF5F5F5),
-              child: Image.asset(
-                ImageProduct,
-                height: 150,
-                width: 190,
+        // color: Colors.red,
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                color: Color(0xFFF5F5F5),
+                child: Image.asset(
+                  ImageProduct,
+                  // height: 150,
+                  width: 190,
+                ),
               ),
-            ),
-            // SizedBox(height: 20,);
-            Container(
-              // height: 200,
-              alignment: Alignment.centerLeft,
-              child: Text(
-                TitleProduct,
-                style: TextStyle(
-                    color: TextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                CategoryProduct,
-                style: TextStyle(color: Color(0xFFC8CECF)),
+              Container(
+                // height: 200,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  // TitleProduct,
+                  'Rp. 200.000',
+                  style: TextStyle(
+                      color: TextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
               ),
-            ),
-            // Spacer(),
-            Container(
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    PriceProduct,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: TextColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add),
-                    color: Colors.white,
-                    style: IconButton.styleFrom(backgroundColor: ColorItem),
-                  )
-                ],
+              Container(
+                // height: 200,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  // TitleProduct,
+                  'New Original Pants',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 92, 92, 92),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16),
+                ),
               ),
-            )
-          ],
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  CategoryProduct,
+                  style: TextStyle(color: Color(0xFFC8CECF)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
