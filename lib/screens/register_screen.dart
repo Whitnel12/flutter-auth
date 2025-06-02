@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -29,10 +30,23 @@ class RegisterScreen extends StatelessWidget {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // Buat akun Firebase Auth
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Simpan data user ke Firestore dengan role pelanggan
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'email': email,
+        'role': 'pelanggan',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Registrasi berhasil!")),
       );
@@ -43,6 +57,41 @@ class RegisterScreen extends StatelessWidget {
       );
     }
   }
+
+  // void _registerUser(BuildContext context) async {
+  //   final email = _emailController.text.trim();
+  //   final password = _passwordController.text.trim();
+  //   final confirmPassword = _confirmPasswordController.text.trim();
+
+  //   if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Jangan ada yang kosong yaa :)")),
+  //     );
+  //     return;
+  //   }
+
+  //   if (password != confirmPassword) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Password tidak cocok")),
+  //     );
+  //     return;
+  //   }
+
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Registrasi berhasil!")),
+  //     );
+  //     Navigator.pushNamed(context, "/login");
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Gagal registrasi: $e")),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

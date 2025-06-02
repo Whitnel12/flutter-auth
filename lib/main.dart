@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:learning_auth/screens/splash_screen.dart';
 import 'package:learning_auth/screens/welcome_screen.dart';
 import 'package:learning_auth/widgets/botttom_nav.dart';
+import 'package:learning_auth/screens/admin/admin_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
-        '/bottom_nav': (context) => BottomNav(),
+        '/bottom_nav': (context) => MainPage(),
+        '/admin_home': (context) => AdminHomeScreen(),
       },
     );
   }

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_auth/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -20,16 +20,32 @@ class LoginScreen extends StatelessWidget {
     }
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      // Login ke Firebase Auth
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
 
-      Navigator.pushReplacementNamed(context, "/bottom_nav");
+      final uid = userCredential.user!.uid;
 
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   con  st SnackBar(content: Text("Login successful!")),
-      // );
+      // Ambil data user dari Firestore
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (!userDoc.exists) {
+        throw Exception("User document not found in Firestore");
+      }
+
+      final role = userDoc['role'];
+
+      // Arahkan ke tampilan berdasarkan role
+      if (role == 'admin') {
+        Navigator.pushReplacementNamed(context, '/admin_home');
+      } else if (role == 'pelanggan') {
+        Navigator.pushReplacementNamed(context, '/bottom_nav');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Unknown role")),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String message = "Login failed";
       if (e.code == 'user-not-found') {
@@ -40,6 +56,10 @@ class LoginScreen extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
       );
     }
   }

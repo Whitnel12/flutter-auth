@@ -104,6 +104,63 @@ class ProfileScreen extends StatelessWidget {
                 IconTile: Icons.description_outlined,
                 LabelTile: "Terms and conditions",
               ),
+              const Spacer(), // This will push the logout button to the bottom
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Konfirmasi Logout'),
+                        content: const Text('Apakah Anda yakin ingin keluar?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close dialog
+                            },
+                            child: const Text('Batal'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close dialog
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/login', // Make sure to define this route in your main.dart
+                                (route) => false,
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red,
+                            ),
+                            child: const Text('Logout'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: Colors.red,
+                        size: 30,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
