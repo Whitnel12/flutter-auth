@@ -13,12 +13,21 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   List<int> _history = [0]; // <--- simpan jejak tab
 
-  final List<Widget> _pages = [
-    HomeScreen(),
-    SearchScreen(),
-    BagPage(),
-    ProfileScreen(),
-  ];
+  // Lazy loading untuk screen
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return HomeScreen();
+      case 1:
+        return SearchScreen();
+      case 2:
+        return BagPage();
+      case 3:
+        return ProfileScreen();
+      default:
+        return HomeScreen();
+    }
+  }
 
   void _onItemTapped(int index) {
     if (_selectedIndex != index) {
@@ -29,24 +38,21 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    if (_history.length > 1) {
-      _history.removeLast(); // Hapus tab sekarang
-      setState(() {
-        _selectedIndex = _history.last; // Balik ke tab sebelumnya
-      });
-      return false; // Jangan keluar app
-    }
-    return true; // Keluar app kalau udah di tab pertama
-  }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope(
+      canPop: _history.length <= 1,
+      onPopInvoked: (didPop) {
+        if (_history.length > 1) {
+          _history.removeLast(); // Hapus tab sekarang
+          setState(() {
+            _selectedIndex = _history.last; // Balik ke tab sebelumnya
+          });
+        }
+      },
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 248, 247, 247),
-        body: _pages[_selectedIndex],
+        body: _getPage(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
